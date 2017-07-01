@@ -7,12 +7,14 @@
               android:layout_height="match_parent"
               android:background="@mipmap/main">
     <ImageView
+        android:id="@+id/image1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@mipmap/exam_title"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp"/>
     <TextView
+        android:id="@+id/exam_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:text="@string/exam_title"
@@ -35,6 +37,7 @@
             android:textColor="#000"
             android:textSize="18sp"/>
         <TextView
+            android:id="@+id/tv_theme"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="这个标志是何含义？"
@@ -58,6 +61,7 @@
             android:textColor="#000"
             android:textSize="18sp"/>
         <TextView
+            android:id="@+id/tv_A"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="车道数变少"
@@ -76,6 +80,7 @@
             android:textColor="#000"
             android:textSize="18sp"/>
         <TextView
+            android:id="@+id/tv_B"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="合流处"
@@ -94,6 +99,7 @@
             android:textColor="#000"
             android:textSize="18sp"/>
         <TextView
+            android:id="@+id/tv_C"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="应急车道"
@@ -112,6 +118,7 @@
             android:textColor="#000"
             android:textSize="18sp"/>
         <TextView
+            android:id="@+id/tv_D"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="向左变道"
