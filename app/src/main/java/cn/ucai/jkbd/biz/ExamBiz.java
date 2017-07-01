@@ -15,8 +15,8 @@ public class ExamBiz implements IExamBiz {
     }
     @Override
     public void beginExam() {
-        examDao.LoadExamInfo();
-        examDao.LoadQuestionLists();
+        dao.LoadExamInfo();
+        dao.LoadQuestionLists();
 
     }
 
