@@ -1,5 +1,4 @@
 package cn.ucai.jkbd.activity;
-
 import android.util.Log;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -9,7 +8,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import cn.ucai.jkbd.bean.*;
 import java.util.List;
@@ -26,15 +28,18 @@ import com.squareup.picasso.Picasso;
  */
 
 public class ExamActivity extends AppCompatActivity {
-
+    LinearLayout layoutLoading;
     TextView tvView;
-    TextView tv_theme,tv_A,tv_B,tv_C,tv_D;
+    TextView tv_theme,tv_A,tv_B,tv_C,tv_D,tv_load;
     ImageView image;
+    ProgressBar loadBar;
     boolean isLoadExamInfo=false;
     boolean isLoadQuestions=false;
+    boolean isLoadExamInfoReceiver=false;
+    boolean isLoadQuestionsReceiver=false;
     LoadExamBroadcast loadExamBroadcast;
     LoadQuestionBroadcast loadQuestionBroadcast;
-
+    ExamBiz biz=new ExamBiz();
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,32 +68,54 @@ public class ExamActivity extends AppCompatActivity {
 
     void loadDate()
      {
+         layoutLoading.setEnabled(false);
+         loadBar.setVisibility(View.VISIBLE);
+         tv_load.setText("下载数据……");
          new Thread(new Runnable() {
              @Override
              public void run() {
-                 ExamBiz biz=new ExamBiz();
+
                  biz.beginExam();
              }
          }).start();
      }
     private void initView() {
+        loadBar=(ProgressBar)findViewById(R.id.load_bar);
+        layoutLoading=(LinearLayout)findViewById(R.id.layout_loading);
         tvView=(TextView)findViewById(R.id.exam_title);
         tv_A=(TextView)findViewById(R.id.tv_A);
         tv_B=(TextView)findViewById(R.id.tv_B);
         tv_C=(TextView)findViewById(R.id.tv_C);
         tv_D=(TextView)findViewById(R.id.tv_D);
+        tv_load=(TextView)findViewById(R.id.tv_load);
         image=(ImageView)findViewById(R.id.image1);
+        layoutLoading.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                  loadDate();
+            }
+        });
     }
     private void initDate() {
-        if(isLoadExamInfo&&isLoadQuestions)
+        if(isLoadExamInfoReceiver&&isLoadQuestionsReceiver)
         {
-            ExamInfo examInfo = ExamApplication.getInstance().getExamInfo();
-            if (examInfo != null)
-                showData(examInfo);
-            List<Exam> examList = ExamApplication.getInstance().getExamList();
-            if (examList != null && examList.size() >= 0)
-                showExam(examList);
+            if(isLoadExamInfo&&isLoadQuestions)
+            {
+                layoutLoading.setVisibility(View.GONE);
+                ExamInfo examInfo = ExamApplication.getInstance().getExamInfo();
+                if (examInfo != null)
+                    showData(examInfo);
+                List<Exam> examList = ExamApplication.getInstance().getExamList();
+                if (examList != null && examList.size() >= 0)
+                    showExam(examList);
+            }
+            else{
+                layoutLoading.setEnabled(true);
+                loadBar.setVisibility(View.GONE);
+                tv_load.setText("下载失败，点击重新下载");
+            }
         }
+
 
     }
 
@@ -117,9 +144,10 @@ public class ExamActivity extends AppCompatActivity {
             boolean isSuccess=intent.getBooleanExtra(ExamApplication.LOAD_DATA_SUCCESS,false);
             if(isSuccess)
             {
-                log.e("LoadExamBroadcast","LoadExamBroadcast,isSuccess="+isSuccess);
+            //    log.e("LoadExamBroadcast","LoadExamBroadcast,isSuccess="+isSuccess);
                 isLoadExamInfo=true;
             }
+            isLoadExamInfoReceiver=true;
             initDate();
         }
     }
@@ -129,10 +157,11 @@ public class ExamActivity extends AppCompatActivity {
             boolean isSuccess=intent.getBooleanExtra(ExamApplication.LOAD_DATA_SUCCESS,false);
             if(isSuccess)
             {
-                log.e("LoadQuestionBroadcast","LoadQuestionBroadcast,isSuccess="+isSuccess);
+            //    log.e("LoadQuestionBroadcast","LoadQuestionBroadcast,isSuccess="+isSuccess);
                 isLoadQuestions=true;
 
             }
+            isLoadQuestionsReceiver=true;
             initDate();
         }
     }
