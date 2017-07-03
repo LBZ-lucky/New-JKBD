@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import cn.ucai.jkbd.bean.*;
 import java.util.List;
@@ -31,6 +32,7 @@ public class ExamActivity extends AppCompatActivity {
     LinearLayout layoutLoading;
     TextView tvView;
     TextView tv_theme,tv_A,tv_B,tv_C,tv_D,tv_load,tv_NO;
+    RadioButton rdA,rdB,rdC,rdD;
     ImageView image;
     ProgressBar loadBar;
     boolean isLoadExamInfo=false;
@@ -39,6 +41,7 @@ public class ExamActivity extends AppCompatActivity {
     boolean isLoadQuestionsReceiver=false;
     LoadExamBroadcast loadExamBroadcast;
     LoadQuestionBroadcast loadQuestionBroadcast;
+
     ExamBiz biz=new ExamBiz();
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,9 +49,19 @@ public class ExamActivity extends AppCompatActivity {
         setContentView(R.layout.activity_exam);
         loadDate();
         initView();
-        LoadExamBroadcast loadExamBroadcast;
-        LoadQuestionBroadcast loadQuestionBroadcast;
-        setListener();
+        setBroadcastListener();
+
+        View.OnClickListener rdListener=new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        };
+
+        tv_A.setOnClickListener(rdListener);
+        tv_B.setOnClickListener(rdListener);
+        tv_C.setOnClickListener(rdListener);
+        tv_D.setOnClickListener(rdListener);
 
     }
 
@@ -61,13 +74,14 @@ public class ExamActivity extends AppCompatActivity {
             unregisterReceiver(loadQuestionBroadcast);
     }
 
-    private void setListener() {
+    private void setBroadcastListener() {
         registerReceiver(loadExamBroadcast,new IntentFilter(ExamApplication.LOAD_EXAM_INFO));
         registerReceiver(loadQuestionBroadcast,new IntentFilter(ExamApplication.LOAD_EXAM_QUESTION));
     }
 
     void loadDate()
      {
+
          layoutLoading.setEnabled(false);
          loadBar.setVisibility(View.VISIBLE);
          tv_load.setText("下载数据……");
@@ -78,8 +92,13 @@ public class ExamActivity extends AppCompatActivity {
                  biz.beginExam();
              }
          }).start();
+
      }
     private void initView() {
+        rdA=(RadioButton)findViewById(R.id.rd_A);
+        rdB=(RadioButton)findViewById(R.id.rd_B);
+        rdC=(RadioButton)findViewById(R.id.rd_C);
+        rdD=(RadioButton)findViewById(R.id.rd_D);
         tv_NO=(TextView)findViewById(R.id.tv_No);
         loadBar=(ProgressBar)findViewById(R.id.load_bar);
         layoutLoading=(LinearLayout)findViewById(R.id.layout_loading);
@@ -141,6 +160,8 @@ public class ExamActivity extends AppCompatActivity {
             }else{
                 image.setVisibility(View.GONE);
             }
+             tv_C.setVisibility(exam.getItem3().equals("")?View.GONE:View.VISIBLE);
+            tv_D.setVisibility(exam.getItem4().equals("")?View.GONE:View.VISIBLE);
 
          }
     }
