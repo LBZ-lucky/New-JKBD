@@ -30,7 +30,7 @@ import com.squareup.picasso.Picasso;
 public class ExamActivity extends AppCompatActivity {
     LinearLayout layoutLoading;
     TextView tvView;
-    TextView tv_theme,tv_A,tv_B,tv_C,tv_D,tv_load;
+    TextView tv_theme,tv_A,tv_B,tv_C,tv_D,tv_load,tv_NO;
     ImageView image;
     ProgressBar loadBar;
     boolean isLoadExamInfo=false;
@@ -80,6 +80,7 @@ public class ExamActivity extends AppCompatActivity {
          }).start();
      }
     private void initView() {
+        tv_NO=(TextView)findViewById(R.id.tv_No);
         loadBar=(ProgressBar)findViewById(R.id.load_bar);
         layoutLoading=(LinearLayout)findViewById(R.id.layout_loading);
         tvView=(TextView)findViewById(R.id.exam_title);
@@ -105,9 +106,8 @@ public class ExamActivity extends AppCompatActivity {
                 ExamInfo examInfo = ExamApplication.getInstance().getExamInfo();
                 if (examInfo != null)
                     showData(examInfo);
-                List<Exam> examList = ExamApplication.getInstance().getExamList();
-                if (examList != null && examList.size() >= 0)
-                    showExam(examList);
+
+                    showExam(biz.getExam());
             }
             else{
                 layoutLoading.setEnabled(true);
@@ -124,21 +124,36 @@ public class ExamActivity extends AppCompatActivity {
     {
             tvView.setText(examInfo.toString());
     }
-    private void showExam(List<Exam> examList) {
-        Exam exam = examList.get(0);
+    private void showExam(Exam exam) {
         if (exam != null)
         {
+            tv_NO.setText(biz.getExamIndex());
             tv_A.setText(exam.getItem1());
             tv_B.setText(exam.getItem2());
             tv_C.setText(exam.getItem3());
             tv_D.setText(exam.getItem4());
-            Picasso.with(this)
-                    .load(exam.getUrl())
-                    .into(image);
+            if(exam!=null&&!exam.getUrl().equals(""))
+            {
+                image.setVisibility(View.VISIBLE);
+                Picasso.with(this)
+                        .load(exam.getUrl())
+                        .into(image);
+            }else{
+                image.setVisibility(View.GONE);
+            }
+
          }
     }
 
-     public class LoadExamBroadcast extends BroadcastReceiver{
+    public void preExem(View view) {
+       showExam(biz.preQuestion());
+    }
+
+    public void nextExam(View view) {
+        showExam(biz.nextQuestion());
+    }
+
+    public class LoadExamBroadcast extends BroadcastReceiver{
         @Override
         public void onReceive(Context context, Intent intent) {
             boolean isSuccess=intent.getBooleanExtra(ExamApplication.LOAD_DATA_SUCCESS,false);
