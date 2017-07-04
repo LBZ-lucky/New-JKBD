@@ -24,6 +24,7 @@ public class ExamApplication extends Application {
     public void onCreate() {
         super.onCreate();
         initDate();
+        instance=this;
     }
 
     private void initView() {

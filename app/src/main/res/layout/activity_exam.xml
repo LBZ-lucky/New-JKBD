@@ -109,6 +109,7 @@
             android:textSize="18sp"/>
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/layout_C"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -128,6 +129,7 @@
             android:textSize="18sp"/>
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/layout_D"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -146,32 +148,36 @@
             android:textColor="#000"
             android:textSize="18sp"/>
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
+    <RadioGroup
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_margin="10dp">
-        <CheckBox
+        android:layout_margin="30dp">
+        <RadioButton
+            android:id="@+id/rd_A"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
+            android:layout_marginRight="10dp"
             android:text="A"/>
-        <CheckBox
+        <RadioButton
+            android:id="@+id/rd_B"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
+            android:layout_marginRight="10dp"
             android:text="B"/>
-        <CheckBox
+        <RadioButton
+            android:id="@+id/rd_C"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
+            android:layout_marginRight="10dp"
             android:text="C"/>
-        <CheckBox
+        <RadioButton
+            android:id="@+id/rd_D"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
             android:text="D"/>
-    </LinearLayout>
+    </RadioGroup>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

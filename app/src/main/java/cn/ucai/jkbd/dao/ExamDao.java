@@ -6,12 +6,8 @@ import android.util.Log;
 import java.util.List;
 
 import cn.ucai.jkbd.ExamApplication;
-import cn.ucai.jkbd.bean.Exam;
-import cn.ucai.jkbd.bean.ExamInfo;
-import cn.ucai.jkbd.bean.Result;
-import cn.ucai.jkbd.utils.OkHttpUtils;
-import cn.ucai.jkbd.utils.ResultUtils;
-
+import cn.ucai.jkbd.bean.*;
+import cn.ucai.jkbd.utils.*;
 /**
  * Created by Zzz on 2017/7/1.
  */

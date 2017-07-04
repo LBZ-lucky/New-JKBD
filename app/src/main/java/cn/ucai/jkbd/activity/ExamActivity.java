@@ -21,6 +21,7 @@ import cn.ucai.jkbd.R;
 import cn.ucai.jkbd.bean.ExamInfo;
 import cn.ucai.jkbd.bean.Result;
 import cn.ucai.jkbd.biz.ExamBiz;
+import cn.ucai.jkbd.biz.IExamBiz;
 import cn.ucai.jkbd.utils.OkHttpUtils;
 import cn.ucai.jkbd.utils.ResultUtils;
 import com.squareup.picasso.Picasso;
@@ -33,6 +34,7 @@ public class ExamActivity extends AppCompatActivity {
     TextView tvView;
     TextView tv_theme,tv_A,tv_B,tv_C,tv_D,tv_load,tv_NO;
     RadioButton rdA,rdB,rdC,rdD;
+    RadioButton[] rds=new RadioButton[4];
     ImageView image;
     ProgressBar loadBar;
     boolean isLoadExamInfo=false;
@@ -42,26 +44,18 @@ public class ExamActivity extends AppCompatActivity {
     LoadExamBroadcast loadExamBroadcast;
     LoadQuestionBroadcast loadQuestionBroadcast;
 
-    ExamBiz biz=new ExamBiz();
+    IExamBiz biz=new ExamBiz();
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exam);
-        loadDate();
         initView();
+
         setBroadcastListener();
+        loadDate();
 
-        View.OnClickListener rdListener=new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-            }
-        };
 
-        tv_A.setOnClickListener(rdListener);
-        tv_B.setOnClickListener(rdListener);
-        tv_C.setOnClickListener(rdListener);
-        tv_D.setOnClickListener(rdListener);
 
     }
 
@@ -99,6 +93,10 @@ public class ExamActivity extends AppCompatActivity {
         rdB=(RadioButton)findViewById(R.id.rd_B);
         rdC=(RadioButton)findViewById(R.id.rd_C);
         rdD=(RadioButton)findViewById(R.id.rd_D);
+        rds[0]=rdA;
+        rds[1]=rdB;
+        rds[2]=rdC;
+        rds[3]=rdD;
         tv_NO=(TextView)findViewById(R.id.tv_No);
         loadBar=(ProgressBar)findViewById(R.id.load_bar);
         layoutLoading=(LinearLayout)findViewById(R.id.layout_loading);
@@ -115,7 +113,18 @@ public class ExamActivity extends AppCompatActivity {
                   loadDate();
             }
         });
+        tv_A.setOnClickListener(rdListener);
+        tv_B.setOnClickListener(rdListener);
+        tv_C.setOnClickListener(rdListener);
+        tv_D.setOnClickListener(rdListener);
+
     }
+    View.OnClickListener rdListener=new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+        }
+    };
     private void initDate() {
         if(isLoadExamInfoReceiver&&isLoadQuestionsReceiver)
         {
@@ -143,6 +152,7 @@ public class ExamActivity extends AppCompatActivity {
     {
             tvView.setText(examInfo.toString());
     }
+
     private void showExam(Exam exam) {
         if (exam != null)
         {
@@ -162,15 +172,39 @@ public class ExamActivity extends AppCompatActivity {
             }
              tv_C.setVisibility(exam.getItem3().equals("")?View.GONE:View.VISIBLE);
             tv_D.setVisibility(exam.getItem4().equals("")?View.GONE:View.VISIBLE);
-
          }
+        String userAnswer = exam.getUserAnswer();
+        if(userAnswer!=null&&!userAnswer.equals(""))
+        {
+            int userRd=Integer.parseInt(userAnswer)-1;
+            rds[userRd].setChecked(true);
+
+        }
+
+    }
+    private void saveUserAnswer()
+    {
+
+        for (int i = 0; i < rds.length; i++) {
+            if(rds[i].isChecked())
+            {
+                biz.getExam().setUserAnswer(String.valueOf(i+1));
+                return ;
+            }
+        }
     }
 
-    public void preExem(View view) {
+
+
+    public void preExem(View view)
+    {
+        saveUserAnswer();
        showExam(biz.preQuestion());
     }
 
-    public void nextExam(View view) {
+    public void nextExam(View view)
+    {
+        saveUserAnswer();
         showExam(biz.nextQuestion());
     }
 
@@ -195,7 +229,6 @@ public class ExamActivity extends AppCompatActivity {
             {
             //    log.e("LoadQuestionBroadcast","LoadQuestionBroadcast,isSuccess="+isSuccess);
                 isLoadQuestions=true;
-
             }
             isLoadQuestionsReceiver=true;
             initDate();
