@@ -13,4 +13,5 @@ public interface IExamBiz {
     void commitExam();
     Exam getExam();
     String getExamIndex();
+
 }

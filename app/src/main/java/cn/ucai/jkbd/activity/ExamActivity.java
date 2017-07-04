@@ -1,4 +1,5 @@
 package cn.ucai.jkbd.activity;
+
 import android.util.Log;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -14,6 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import cn.ucai.jkbd.bean.*;
 import java.util.List;
 import cn.ucai.jkbd.ExamApplication;
@@ -30,11 +33,12 @@ import com.squareup.picasso.Picasso;
  */
 
 public class ExamActivity extends AppCompatActivity {
-    LinearLayout layoutLoading;
+    LinearLayout layoutLoading,layout_C,layout_D;
     TextView tvView;
-    TextView tv_theme,tv_A,tv_B,tv_C,tv_D,tv_load,tv_NO;
+    TextView tv_theme,tv_A,tv_B,tv_C,tv_D,tv_load,tv_NO,tv_Theme;
     RadioButton rdA,rdB,rdC,rdD;
     RadioButton[] rds=new RadioButton[4];
+
     ImageView image;
     ProgressBar loadBar;
     boolean isLoadExamInfo=false;
@@ -44,17 +48,17 @@ public class ExamActivity extends AppCompatActivity {
     LoadExamBroadcast loadExamBroadcast;
     LoadQuestionBroadcast loadQuestionBroadcast;
 
-    IExamBiz biz=new ExamBiz();
+    IExamBiz biz;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exam);
         initView();
-
+        loadExamBroadcast=new LoadExamBroadcast();
+        loadQuestionBroadcast=new LoadQuestionBroadcast();
         setBroadcastListener();
         loadDate();
-
-
+        biz=new ExamBiz();
 
 
     }
@@ -97,16 +101,19 @@ public class ExamActivity extends AppCompatActivity {
         rds[1]=rdB;
         rds[2]=rdC;
         rds[3]=rdD;
+        tv_Theme=(TextView)findViewById(R.id.tv_theme);
         tv_NO=(TextView)findViewById(R.id.tv_No);
         loadBar=(ProgressBar)findViewById(R.id.load_bar);
         layoutLoading=(LinearLayout)findViewById(R.id.layout_loading);
+        layout_C=(LinearLayout)findViewById(R.id.layout_C);
+        layout_D=(LinearLayout)findViewById(R.id.layout_D);
         tvView=(TextView)findViewById(R.id.exam_title);
         tv_A=(TextView)findViewById(R.id.tv_A);
         tv_B=(TextView)findViewById(R.id.tv_B);
         tv_C=(TextView)findViewById(R.id.tv_C);
         tv_D=(TextView)findViewById(R.id.tv_D);
         tv_load=(TextView)findViewById(R.id.tv_load);
-        image=(ImageView)findViewById(R.id.image1);
+        image=(ImageView)findViewById(R.id.imageView);
         layoutLoading.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -157,6 +164,7 @@ public class ExamActivity extends AppCompatActivity {
         if (exam != null)
         {
             tv_NO.setText(biz.getExamIndex());
+            tv_Theme.setText(exam.getQuestion());
             tv_A.setText(exam.getItem1());
             tv_B.setText(exam.getItem2());
             tv_C.setText(exam.getItem3());
@@ -170,9 +178,15 @@ public class ExamActivity extends AppCompatActivity {
             }else{
                 image.setVisibility(View.GONE);
             }
-             tv_C.setVisibility(exam.getItem3().equals("")?View.GONE:View.VISIBLE);
-            tv_D.setVisibility(exam.getItem4().equals("")?View.GONE:View.VISIBLE);
-         }
+            layout_C.setVisibility(exam.getItem3().equals("")?View.GONE:View.VISIBLE);
+            layout_D.setVisibility(exam.getItem4().equals("")?View.GONE:View.VISIBLE);
+            rdC.setVisibility(exam.getItem3().equals("")?View.GONE:View.VISIBLE);
+            rdD.setVisibility(exam.getItem4().equals("")?View.GONE:View.VISIBLE);
+         }else{
+            Toast.makeText(this,"没有上一题！",Toast.LENGTH_LONG).show();
+        }
+
+
         String userAnswer = exam.getUserAnswer();
         if(userAnswer!=null&&!userAnswer.equals(""))
         {
@@ -211,12 +225,14 @@ public class ExamActivity extends AppCompatActivity {
     public class LoadExamBroadcast extends BroadcastReceiver{
         @Override
         public void onReceive(Context context, Intent intent) {
+
             boolean isSuccess=intent.getBooleanExtra(ExamApplication.LOAD_DATA_SUCCESS,false);
             if(isSuccess)
             {
-            //    log.e("LoadExamBroadcast","LoadExamBroadcast,isSuccess="+isSuccess);
+              //  log.e("LoadExamBroadcast","LoadExamBroadcast,isSuccess="+isSuccess);
                 isLoadExamInfo=true;
             }
+
             isLoadExamInfoReceiver=true;
             initDate();
         }

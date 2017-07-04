@@ -23,7 +23,6 @@ public class ExamApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        initDate();
         instance=this;
     }
 
@@ -32,13 +31,6 @@ public class ExamApplication extends Application {
     public static ExamApplication getInstance(){
         return instance;
     }
-
-    private void initDate() {
-
-
-    }
-
-
     public ExamInfo getExamInfo() {
         return examInfo;
     }
@@ -51,6 +43,6 @@ public class ExamApplication extends Application {
     }
 
     public void setExamList(List<Exam> examList) {
-        examList = examList;
+        this.examList = examList;
     }
 }

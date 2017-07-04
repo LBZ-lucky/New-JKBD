@@ -65,11 +65,14 @@
             android:textColor="#000"
             android:textSize="18sp"/>
     </LinearLayout>
+
     <ImageView
+        android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:src="@mipmap/exam_image"
-        android:layout_gravity="center_horizontal"/>
+        android:layout_gravity="center_horizontal"
+        tools:src="@mipmap/exam_image" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -188,6 +191,7 @@
             android:drawableLeft="@mipmap/exam_pre32x32"
             android:background="@null"
             android:text="上一题"
+            android:onClick="preExem"
             android:layout_alignParentLeft="true"/>
         <Button
             android:id="@+id/btn_next"
@@ -196,7 +200,7 @@
             android:drawableRight="@mipmap/exam_next32x32"
             android:background="@null"
             android:text="下一题"
-            android:onClick="preExem"
+            android:onClick="nextExam"
             android:layout_alignParentRight="true"/>
         <Button
             android:layout_width="wrap_content"

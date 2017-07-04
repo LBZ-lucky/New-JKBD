@@ -17,7 +17,7 @@ public class ExamBiz implements IExamBiz {
     List<Exam> examList=null;
     public ExamBiz()
     {
-        dao=new ExamDao();
+        this.dao=new ExamDao();
     }
     @Override
     public void beginExam() {
@@ -39,6 +39,7 @@ public class ExamBiz implements IExamBiz {
 
     @Override
     public Exam preQuestion() {
+
         if(examList!=null&&examIndex>0){
             examIndex--;
             return examList.get(examIndex);
@@ -54,7 +55,7 @@ public class ExamBiz implements IExamBiz {
 
     @Override
     public Exam getExam() {
-        List<Exam> examList=ExamApplication.getInstance().getExamList();
+        examList=ExamApplication.getInstance().getExamList();
           if(examList!=null)
             return examList.get(examIndex);
           else
