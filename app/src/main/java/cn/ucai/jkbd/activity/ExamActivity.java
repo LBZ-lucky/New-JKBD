@@ -268,9 +268,11 @@ public class ExamActivity extends AppCompatActivity {
             if(rds[i].isChecked())
             {
                 biz.getExam().setUserAnswer(String.valueOf(i+1));
+                adapter.notifyDataSetChanged();
                 return ;
             }
         }
+        adapter.notifyDataSetChanged();
     }
 
 
