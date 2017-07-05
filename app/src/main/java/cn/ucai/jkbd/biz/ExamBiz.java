@@ -78,7 +78,7 @@ public class ExamBiz implements IExamBiz {
         if(examList!=null)
             return examList.get(examIndex);
         else
-            return  null;
+    return  null;
     }
 
     @Override

@@ -133,19 +133,11 @@ public class ExamActivity extends AppCompatActivity {
                   loadDate();
             }
         });
-        tv_A.setOnClickListener(rdListener);
-        tv_B.setOnClickListener(rdListener);
-        tv_C.setOnClickListener(rdListener);
-        tv_D.setOnClickListener(rdListener);
+
 
 
     }
-    View.OnClickListener rdListener=new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
 
-        }
-    };
     private void initDate() {
         if(isLoadExamInfoReceiver&&isLoadQuestionsReceiver)
         {
@@ -231,7 +223,8 @@ public class ExamActivity extends AppCompatActivity {
             tv_B.setText(exam.getItem2());
             tv_C.setText(exam.getItem3());
             tv_D.setText(exam.getItem4());
-            if(exam!=null&&!exam.getUrl().equals(""))
+
+            if(exam.getUrl()!=null&&!exam.getUrl().equals(""))
             {
                 image.setVisibility(View.VISIBLE);
                 Picasso.with(this)
@@ -240,26 +233,44 @@ public class ExamActivity extends AppCompatActivity {
             }else{
                 image.setVisibility(View.GONE);
             }
-            if(exam.getUserAnswer()==null||exam.getUserAnswer().equals(""))
-                for (RadioButton rd : rds) {
-                    rd.setChecked(false);
-                }
+
+
+
+
             layout_C.setVisibility(exam.getItem3().equals("")?View.GONE:View.VISIBLE);
             layout_D.setVisibility(exam.getItem4().equals("")?View.GONE:View.VISIBLE);
             rdC.setVisibility(exam.getItem3().equals("")?View.GONE:View.VISIBLE);
             rdD.setVisibility(exam.getItem4().equals("")?View.GONE:View.VISIBLE);
 
+            String userAnswer = exam.getUserAnswer();
+            Log.e("userAnswer","userAnswer="+userAnswer+"  "+biz.getExamIndex());
+            for (RadioButton rd : rds) {
+                rd.setChecked(false);
+            }
+            if(userAnswer!=null&&!userAnswer.equals("")) {
+                Log.e("userAnswer", "userAnswer=" + userAnswer);
+                int userRd = Integer.parseInt(userAnswer)-1;
+                rds[userRd].setChecked(true);
+                for (RadioButton rd : rds) {
+                    rd.setEnabled(false);
+                    setOptions(true);
+                }
+            }else{
+                Log.e("userAnswer", "userAnswer(else)=" + null);
+                setOptions(false);
+            }
          }
 
 
-        String userAnswer = exam.getUserAnswer();
-        if(userAnswer!=null&&!userAnswer.equals(""))
-        {
-            int userRd=Integer.parseInt(userAnswer)-1;
-            rds[userRd].setChecked(true);
 
+    }
+
+
+    private  void setOptions(Boolean hasAnswer)
+    {
+        for (RadioButton rd : rds) {
+            rd.setEnabled(!hasAnswer);
         }
-
     }
     private void saveUserAnswer()
     {
@@ -267,8 +278,9 @@ public class ExamActivity extends AppCompatActivity {
         for (int i = 0; i < rds.length; i++) {
             if(rds[i].isChecked())
             {
+
                 biz.getExam().setUserAnswer(String.valueOf(i+1));
-                adapter.notifyDataSetChanged();
+               adapter.notifyDataSetChanged();
                 return ;
             }
         }
