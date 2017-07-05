@@ -1,16 +1,14 @@
-package cn.ucai.jkbd.activity;
+package jkbd.activity;
 
-import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Gallery;
@@ -19,24 +17,20 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import cn.ucai.jkbd.bean.*;
-import java.util.List;
+import com.squareup.picasso.Picasso;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
 import cn.ucai.jkbd.ExamApplication;
 import cn.ucai.jkbd.R;
+import cn.ucai.jkbd.bean.*;
 import cn.ucai.jkbd.bean.ExamInfo;
-import cn.ucai.jkbd.bean.Result;
 import cn.ucai.jkbd.biz.ExamBiz;
 import cn.ucai.jkbd.biz.IExamBiz;
-import cn.ucai.jkbd.utils.OkHttpUtils;
-import cn.ucai.jkbd.utils.ResultUtils;
 import cn.ucai.jkbd.view.QuestionAdapter;
 
-import com.squareup.picasso.Picasso;
 /**
  * Created by clawpo on 2017/6/29.
  */

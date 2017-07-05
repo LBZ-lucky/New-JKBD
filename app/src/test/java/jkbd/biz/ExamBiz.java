@@ -1,4 +1,4 @@
-package cn.ucai.jkbd.biz;
+package jkbd.biz;
 
 import java.util.List;
 
