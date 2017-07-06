@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Path;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -18,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -52,6 +54,8 @@ public class ExamActivity extends AppCompatActivity {
 
     IExamBiz biz;
     @BindView(R.id.load_bar) ProgressBar loadBar;
+    @BindView(R.id.radioGroup) RadioGroup radioGroup;
+    @BindView(R.id.tv_explain) TextView tv_explain;
     @BindView(R.id.tv_load) TextView tv_load;
     @BindView(R.id.layout_loading) LinearLayout layoutLoading;
     @BindView(R.id.image1) ImageView image1;
@@ -75,18 +79,22 @@ public class ExamActivity extends AppCompatActivity {
     @BindView(R.id.layout_A) LinearLayout layout_A;
     @BindView(R.id.layout_B) LinearLayout layout_B;
     TextView[] tvs=new TextView[4];
+    char[] Options=new char[4];
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exam);
         ButterKnife.bind(this);
+        biz = new ExamBiz();
+
         initView();
         loadExamBroadcast = new LoadExamBroadcast();
         loadQuestionBroadcast = new LoadQuestionBroadcast();
         setBroadcastListener();
         loadDate();
-        biz = new ExamBiz();
+
 
 
     }
@@ -134,7 +142,10 @@ public class ExamActivity extends AppCompatActivity {
         tvs[1]=tv_B;
         tvs[2]=tv_C;
         tvs[3]=tv_D;
-
+        Options[0]='A';
+        Options[1]='B';
+        Options[2]='C';
+        Options[3]='D';
 //        gallery = (Gallery) findViewById(R.id.gallery);
 //        tv_Theme = (TextView) findViewById(R.id.tv_theme);
 //        tv_NO = (TextView) findViewById(R.id.tv_No);
@@ -156,9 +167,18 @@ public class ExamActivity extends AppCompatActivity {
 //                loadDate();
 //            }
 //        });
-
+         rds[0].setOnClickListener(rdsOnClick);
+        rds[1].setOnClickListener(rdsOnClick);
+        rds[2].setOnClickListener(rdsOnClick);
+        rds[3].setOnClickListener(rdsOnClick);
 
     }
+    View.OnClickListener rdsOnClick=new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+        }
+    };
 
     @OnClick(R.id.layout_loading)
     void onLoadClick() {
@@ -260,6 +280,7 @@ public class ExamActivity extends AppCompatActivity {
             for (RadioButton rd : rds) {
                 rd.setChecked(false);
             }
+            tv_explain.setText("");
             layout_C.setVisibility(exam.getItem3().equals("") ? View.GONE : View.VISIBLE);
             layout_D.setVisibility(exam.getItem4().equals("") ? View.GONE : View.VISIBLE);
             rdC.setVisibility(exam.getItem3().equals("") ? View.GONE : View.VISIBLE);
@@ -267,22 +288,24 @@ public class ExamActivity extends AppCompatActivity {
 
             String userAnswer = exam.getUserAnswer();
             Log.e("userAnswer", "userAnswer=" + userAnswer + "  " + biz.getExamIndex());
-            for (RadioButton rd : rds) {
-                rd.setChecked(false);
-            }
+            radioGroup.clearCheck();
             if (userAnswer != null && !userAnswer.equals("")) {
                 int userRd = Integer.parseInt(userAnswer) - 1;
-                Log.e("userRd","userRd="+userRd);
+
                 rds[userRd].setChecked(true);
-              for (RadioButton rd : rds) {
+                String explain = "  你的答案为：" + Options[userRd];
+                explain += "\n  正确答案为：" + Options[Integer.parseInt(exam.getAnswer()) - 1] + "\n  解析：" + exam.getExplains();
+                tv_explain.setText(explain);
+                for (RadioButton rd : rds) {
                     rd.setEnabled(false);
-                  setAnswerTextColor(userAnswer, exam.getAnswer());
-               }
+                }
+
+                setAnswerTextColor(userAnswer, exam.getAnswer());
             } else {
                 setOptions(false);
             }
-        }
 
+        }
 
     }
 

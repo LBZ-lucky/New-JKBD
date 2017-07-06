@@ -169,6 +169,7 @@
                     android:textSize="18sp"/>
             </LinearLayout>
             <RadioGroup
+                android:id="@+id/radioGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -197,6 +198,13 @@
                     android:layout_height="wrap_content"
                     android:text="D"/>
             </RadioGroup>
+
+                <TextView
+                    android:id="@+id/tv_explain"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="解釋"/>
+
             <Gallery
                 android:id="@+id/gallery"
                 android:layout_width="match_parent"
