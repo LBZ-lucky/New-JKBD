@@ -87,6 +87,7 @@
                 tools:src="@mipmap/exam_image" />
 
             <LinearLayout
+                android:id="@+id/layout_A"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -106,6 +107,7 @@
                     android:textSize="18sp"/>
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/layout_B"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -124,6 +126,7 @@
                     android:textColor="#000"
                     android:textSize="18sp"/>
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/layout_C"
                 android:layout_width="match_parent"
@@ -144,6 +147,7 @@
                     android:textColor="#000"
                     android:textSize="18sp"/>
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/layout_D"
                 android:layout_width="match_parent"

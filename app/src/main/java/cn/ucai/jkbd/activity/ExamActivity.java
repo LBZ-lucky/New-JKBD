@@ -52,7 +52,7 @@ public class ExamActivity extends AppCompatActivity {
 
     IExamBiz biz;
     @BindView(R.id.load_bar) ProgressBar loadBar;
-    @BindView(R.id.tv_load)  TextView tv_load;
+    @BindView(R.id.tv_load) TextView tv_load;
     @BindView(R.id.layout_loading) LinearLayout layoutLoading;
     @BindView(R.id.image1) ImageView image1;
     @BindView(R.id.exam_title) TextView tvView;
@@ -65,7 +65,6 @@ public class ExamActivity extends AppCompatActivity {
     @BindView(R.id.tv_C) TextView tv_C;
     @BindView(R.id.tv_D) TextView tv_D;
     @BindView(R.id.layout_C) LinearLayout layout_C;
-
     @BindView(R.id.layout_D) LinearLayout layout_D;
     @BindView(R.id.rd_A) RadioButton rdA;
     @BindView(R.id.rd_B) RadioButton rdB;
@@ -73,6 +72,9 @@ public class ExamActivity extends AppCompatActivity {
     @BindView(R.id.rd_D) RadioButton rdD;
     @BindView(R.id.gallery) Gallery gallery;
     @BindView(R.id.btn_next) Button btnNext;
+    @BindView(R.id.layout_A) LinearLayout layout_A;
+    @BindView(R.id.layout_B) LinearLayout layout_B;
+    TextView[] tvs=new TextView[4];
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -128,6 +130,11 @@ public class ExamActivity extends AppCompatActivity {
         rds[1] = rdB;
         rds[2] = rdC;
         rds[3] = rdD;
+        tvs[0]=tv_A;
+        tvs[1]=tv_B;
+        tvs[2]=tv_C;
+        tvs[3]=tv_D;
+
 //        gallery = (Gallery) findViewById(R.id.gallery);
 //        tv_Theme = (TextView) findViewById(R.id.tv_theme);
 //        tv_NO = (TextView) findViewById(R.id.tv_No);
@@ -152,8 +159,9 @@ public class ExamActivity extends AppCompatActivity {
 
 
     }
-    @OnClick(R.id.layout_loading) void onLoadClick()
-    {
+
+    @OnClick(R.id.layout_loading)
+    void onLoadClick() {
         loadDate();
     }
 
@@ -264,6 +272,7 @@ public class ExamActivity extends AppCompatActivity {
                 for (RadioButton rd : rds) {
                     rd.setEnabled(false);
                     setOptions(true);
+                    setAnswerTextColor(userAnswer, exam.getAnswer());
                 }
             } else {
                 Log.e("userAnswer", "userAnswer(else)=" + null);
@@ -271,6 +280,24 @@ public class ExamActivity extends AppCompatActivity {
             }
         }
 
+
+    }
+
+    private void setAnswerTextColor(String userAnswer, String answer) {
+        int i=Integer.parseInt(answer);
+        tvs[i].setTextColor(getResources().getColor(R.color.green));
+      if(!userAnswer.equals(answer))
+      {
+          int j=Integer.parseInt(userAnswer);
+          tvs[i].setTextColor(getResources().getColor(R.color.red));
+          for (int i1 = 1; i1 <= tvs.length; i1++) {
+              if(i1!=i&&i1!=j)
+              {
+                  tvs[i1].setTextColor(getResources().getColor(R.color.black));
+              }
+
+          }
+      }
 
     }
 
