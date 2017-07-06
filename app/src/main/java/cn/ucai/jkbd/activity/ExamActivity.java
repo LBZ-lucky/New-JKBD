@@ -254,7 +254,12 @@ public class ExamActivity extends AppCompatActivity {
                 image.setVisibility(View.GONE);
             }
 
-
+            for (TextView tv : tvs) {
+                tv.setTextColor(getResources().getColor(R.color.black));
+            }
+            for (RadioButton rd : rds) {
+                rd.setChecked(false);
+            }
             layout_C.setVisibility(exam.getItem3().equals("") ? View.GONE : View.VISIBLE);
             layout_D.setVisibility(exam.getItem4().equals("") ? View.GONE : View.VISIBLE);
             rdC.setVisibility(exam.getItem3().equals("") ? View.GONE : View.VISIBLE);
@@ -266,16 +271,14 @@ public class ExamActivity extends AppCompatActivity {
                 rd.setChecked(false);
             }
             if (userAnswer != null && !userAnswer.equals("")) {
-                Log.e("userAnswer", "userAnswer=" + userAnswer);
                 int userRd = Integer.parseInt(userAnswer) - 1;
+                Log.e("userRd","userRd="+userRd);
                 rds[userRd].setChecked(true);
-                for (RadioButton rd : rds) {
+              for (RadioButton rd : rds) {
                     rd.setEnabled(false);
-                    setOptions(true);
-                    setAnswerTextColor(userAnswer, exam.getAnswer());
-                }
+                  setAnswerTextColor(userAnswer, exam.getAnswer());
+               }
             } else {
-                Log.e("userAnswer", "userAnswer(else)=" + null);
                 setOptions(false);
             }
         }
@@ -284,13 +287,13 @@ public class ExamActivity extends AppCompatActivity {
     }
 
     private void setAnswerTextColor(String userAnswer, String answer) {
-        int i=Integer.parseInt(answer);
+        int i=Integer.parseInt(answer)-1;
         tvs[i].setTextColor(getResources().getColor(R.color.green));
       if(!userAnswer.equals(answer))
       {
-          int j=Integer.parseInt(userAnswer);
-          tvs[i].setTextColor(getResources().getColor(R.color.red));
-          for (int i1 = 1; i1 <= tvs.length; i1++) {
+          int j=Integer.parseInt(userAnswer)-1;
+          tvs[j].setTextColor(getResources().getColor(R.color.red));
+          for (int i1 = 0; i1 < tvs.length; i1++) {
               if(i1!=i&&i1!=j)
               {
                   tvs[i1].setTextColor(getResources().getColor(R.color.black));
