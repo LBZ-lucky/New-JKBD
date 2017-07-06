@@ -314,6 +314,7 @@ public class ExamActivity extends AppCompatActivity {
             if (rds[i].isChecked()) {
 
                 biz.getExam().setUserAnswer(String.valueOf(i + 1));
+                setOptions(true);
                 adapter.notifyDataSetChanged();
                 return;
             }
@@ -331,8 +332,22 @@ public class ExamActivity extends AppCompatActivity {
         saveUserAnswer();
         showExam(biz.nextQuestion());
     }
-
-    public void commit(View view) {
+    public void commit(View view)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("交卷")
+                .setTitle("你还有剩余时间,确认交卷吗？")
+                .setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        commit();
+                    }
+                })
+                .setNegativeButton("取消",null);
+        builder.setCancelable(false);
+        builder.create().show();
+    }
+    public void commit() {
         saveUserAnswer();
         int score = biz.commitExam();
         View inflate = View.inflate(this, R.layout.layout_result, null);
