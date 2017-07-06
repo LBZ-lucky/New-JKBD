@@ -22,7 +22,9 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".activity.ExamActivity"/>
+        <activity android:name=".activity.ExamActivity"
+            android:screenOrientation="portrait"/>
+
     </application>
 
 </manifest>
